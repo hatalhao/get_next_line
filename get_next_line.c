@@ -4,17 +4,17 @@
 
 int	gt_count(char *s)
 {
-
+	
 }
 
 char    *get_next_line(int fd)
 {
-	static char	c;
+	static char	*c;
 	char		*s;
 
-	while (c != '\n')
+	while (*c != '\n')
 	{
-		FILE* fd;
+		;
 	}	
 		
 	return (NULL);
