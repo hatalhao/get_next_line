@@ -1,58 +1,49 @@
 #include "get_next_line.h"
 #include <string.h>
-////ggjhghjgjhgj
-// int ft_strlen(const char )
-char	*ft_strdup(char const *src)
+
+
+
+char	*get_split(char *str)
 {
-	size_t	i;
-	char	*duplicate;
-	// printf("---strdup---\n");
-	duplicate = (char *) malloc ((strlen(src) + 1) * sizeof(char));
-	if (!duplicate)
-		return (NULL);
-	i = 0;
-	while (src[i])
-	{
-		duplicate[i] = src[i];
-		i++;
-	}
-	duplicate[i] = '\0';
-	return (duplicate);
+	char	*trim;
+	int		len;
+	
+	len = 0;
+	while (str[len] && (str[len] != '\n'))
+		len++;
+	trim = ft_substr(str, 0, len);
+	return (trim);
 }
 
 char    *get_next_line(int fd)
 {
-	char		*str = malloc(10000);
-	static int	i;
+	static char	*str;
 	int 		rd;
 
-	rd = read(fd, str + i, buf)
-	i = 0;
+	str = malloc(BUFFER_SIZE + 1);
 	if (str == NULL)
-		return NULL;
-	int buf = BUFFER_SIZE - BUFFER_SIZE + 1;
-	while (rd > 0)
-	{
-		if (str[i] == '\n')
-			break;
-		i++;
-	}
-	str[i] = '\0';
+		return (NULL);
+	rd = read(fd, str, BUFFER_SIZE);
 	if (rd <= 0 || BUFFER_SIZE <= 0)
-		return NULL;
+		return (NULL);
 	return (str);
 }
 
 int main()
 {
-	char *str = NULL;
-	int fd = open("test.txt", O_RDWR , 0664);
-	int i = 0;
-	int count = 10;
-	while (i < count)
-		{
-			str = get_next_line(fd);
-			printf("%s\n",str);
-			i++;
-		}
+	static	char *str;
+	int fd = open("test.txt", O_RDWR);
+	str = get_next_line(fd);
+	printf("%s--\n",str);
+	// int i = 0;
+	// int count;
+	// printf("%p--\n", str);
+	// while (*str)
+	// 	{	
+	// 		// str = get_next_line(fd);
+	// 		// printf("[%s]\n", str);
+	// 		// printf("%p--\n", str);
+	// 		// str++;
+	// 	}
+	close(fd);
 }
