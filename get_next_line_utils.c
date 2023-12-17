@@ -6,11 +6,40 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2023/12/10 20:46:02 by hatalhao         ###   ########.fr       */
+/*   Updated: 2023/12/16 03:23:44 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+size_t	ft_strlen(char const *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	*ft_memcpy(void *dest, const void *src, size_t n)
+{
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
+
+	if (dest == src)
+		return (dest);
+	str1 = (unsigned char *) src;
+	str2 = (unsigned char *) dest;
+	i = 0;
+	while (i < n)
+	{
+		str2[i] = str1[i];
+		i++;
+	}
+	return (dest);
+}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
@@ -74,8 +103,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ss = (char *) malloc ((len + 1) * sizeof(char));
 	if (ss == NULL)
 		return (NULL);
-	ss = ft_memcpy(ss, s + start, len);
+	ft_memcpy(ss, s + start, len);
 	ss[len] = '\0';
 	return (ss);
 }
-

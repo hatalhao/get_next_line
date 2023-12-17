@@ -1,32 +1,63 @@
 #include "get_next_line.h"
 #include <string.h>
 
-
-
-char	*get_split(char *str)
+int	look_for(char *str)
 {
-	char	*trim;
-	int		len;
-	
+	int len;
+
 	len = 0;
-	while (str[len] && (str[len] != '\n'))
+	while (str && str[len] && (str[len] != '\n'))
+	{
+		if (str[len] == '\n')
+			return (len);
 		len++;
-	trim = ft_substr(str, 0, len);
-	return (trim);
+	}
+	return (0);
+}
+
+// char	*get_split(char *str, int len)
+// {
+// 	char	*trim;
+	
+// 	trim = ft_substr(str, 0, len);
+// 	return (trim);
+// }
+
+char	*all_newl(char	*str, int size, int fd)
+{
+	int 		rd;
+	int len;
+
+	len = 0;
+	str = malloc (size);
+	if (str == NULL)
+		return (NULL);
+	rd = read(fd, str, size);
+	while (str[len] && (rd > 0))
+	{
+		if (str[len] == '\n')
+		{
+			str[len] = '\0';
+			return (str);
+		}
+		//printf("%c", str[len]);
+		len++;
+	}
+	if (rd <= 0 || size <= 0)
+		return (NULL);
+	return (NULL);
 }
 
 char    *get_next_line(int fd)
 {
 	static char	*str;
-	int 		rd;
+	char		*tmp;
+	int			len;
 
-	str = malloc(BUFFER_SIZE + 1);
-	if (str == NULL)
-		return (NULL);
-	rd = read(fd, str, BUFFER_SIZE);
-	if (rd <= 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	return (str);
+	tmp = all_newl(str, BUFFER_SIZE, fd);
+	len = look_for(str);
+	//printf("%s", tmp);
+	return (tmp);
 }
 
 int main()
