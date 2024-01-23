@@ -1,19 +1,26 @@
 #include "get_next_line.h"
 #include <string.h>
 
+void	freee(char **str)
+{
+	free (str);
+	*str = NULL;
+}
+
 char	*join_carry(char *remain)
 {
 	char	*total;
 	char	*next;
 
-	next = malloc (BUFFER_SIZE);
+	next = malloc (BUFFER_SIZE + 1);
 	if (next == NULL)
 		return (NULL);
 	total = ft_strjoin(remain, next);
+	freee(&next);
 	return (total);
 }
 
-int	look_for(char *str)
+int	new_line(char *str)
 {
 	int len;
 
@@ -21,80 +28,79 @@ int	look_for(char *str)
 	while (str)
 	{
 		if (str[len] == '\n')
-		{	
-			//printf("IN\n");
-			printf("[%d]\n", len);
 			return (len);
-		}
 		len++;
 	}
-	return (0);
+	return (-1);
 }
 
-char	*all_newl(char	*str, int fd)
+char	*ft_allocate(char *str, int fd)
 {
 	int	rd;
-	int	len;
-	int	bool;
+	int bool;
 
-	bool = 0;
-	len = 0;
-	str = malloc (BUFFER_SIZE);
-	if (str == NULL)
+	str = malloc (BUFFER_SIZE + 1);
+	if (!str)
 		return (NULL);
-	rd = read(fd, str, BUFFER_SIZE);
-	while (str[len] && (rd > 0))
+	rd = 1;
+	bool = -1;
+	while (rd > 0 && bool < 0)
 	{
-		if (str[len] == '\n')
-		{
-			if (str[len + 1]  != '\0')
-				
-			bool = 1;
-			str[len + 1] = '\0';
+		rd = read(fd, str, BUFFER_SIZE);
+		//printf("**%s**\n", str);
+		bool = new_line(str);
+		if (bool >= 0)
+			{
+				//printf ("++%d++\n", bool);
+				return (str);
+			}
+		else
 			return (str);
-		}
-		len++;
 	}
-	if (len == BUFFER_SIZE && bool == 0)
-		join_carry(str);
 	if (rd <= 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	return (NULL);
+	return (str);
 }
 
 char    *get_next_line(int fd)
 {
 	static char	*str;
 	char		*contain;
-	char		*tmp;
+	char		*main;
+	int			pos;
+	int			rd;
 
 	contain = NULL;
-	tmp = all_newl(contain, fd);
-	//printf(">> tmp = [%s] <<\n", tmp);
-	printf(">> contain = [%s] <<\n", contain);
+	contain = ft_allocate(contain, fd);
+	pos = new_line (contain);
+	//printf(">> container IN = [%s] <<\n", contain);
+	if (str && rd > 0)
+	{
+		ft_memcpy (main, str, BUFFER_SIZE);
+		if ((new_line(main) < 0))
+			join_carry(main);
+	}
+	else if (pos >= 0)
+	{
+		main = ft_substr (contain, 0, pos);
+		str = ft_substr (contain, pos, *contain - (*contain + pos));
+	}
+	else if (new_line (contain) < 0)
+		str = join_carry(contain);
+	//printf(">> main = [%s] <<\n", main);
 	printf(">> str = [%s] <<\n", str);
-	//free (str);
-	return (tmp);
+	return (main);
 }
 
 int main()
 {
 	char	*str;
+	//char	*str1;
 	
 	int fd = open("test.txt", O_RDWR);
 	str = get_next_line(fd);
-	printf("%s",str);
-	str = get_next_line(fd);
-	printf("%s",str);
-	// int i = 0;
-	// int count;
-	// printf("%p--\n", str);
-	// while (*str)
-	// 	{	
-	// 		// str = get_next_line(fd);
-	// 		// printf("[%s]\n", str);
-	// 		// printf("%p--\n", str);
-	// 		// str++;
-	// 	}
+	printf("...%s...\n",str);
+	//str1 = get_next_line(fd);
+	//printf("%s",str1);
 	close(fd);
 }

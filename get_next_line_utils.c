@@ -48,7 +48,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	len;
 	char	*str;
 
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (0);
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
@@ -83,12 +83,10 @@ char	*ft_strdup(char const *src)
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ss;
-	size_t	i;
 	size_t	isleft;
 
 	if (!s)
 		return (0);
-	i = 0;
 	if (start >= ft_strlen(s) || !len)
 	{
 		ss = (char *) malloc ((1) * sizeof(char));
