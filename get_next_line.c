@@ -42,6 +42,7 @@ char	*ft_allocate(char *str, int fd)
 	str = malloc (BUFFER_SIZE + 1);
 	if (!str)
 		return (NULL);
+	str[BUFFER_SIZE] = 0;
 	rd = 1;
 	bool = -1;
 	while (rd > 0 && bool < 0)
