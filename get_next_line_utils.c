@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/01/24 00:40:59 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/01/24 06:55:03 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,17 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	len;
 	char	*str;
 
+	if (!s1 && !s2)
+		return (NULL);
 	if (!s1 && s2)
-		return (s2);
+		return ((char *)s2);
 	if (s1 && !s2)
-		return (s1);	
+		return ((char *)s1);	
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	len = len1 + len2;
 	str = (char *) malloc ((len + 1) * sizeof(char));
-	if (str == NULL)
+	if (!str)
 		return (NULL);
 	ft_memcpy(str, s1, len1);
 	ft_memcpy(str + len1, s2, len2);

@@ -25,7 +25,7 @@ void    allo_read(char **str, int fd)
     rd = read (fd, tmp, BUFFER_SIZE);
     while (rd > 0)
     {
-        *str = ft_strjoin(str, tmp);
+        *str = ft_strjoin(*str, tmp);
         if (new_line(tmp) >= 0)
             return ;
         rd = read (fd, tmp, BUFFER_SIZE);
@@ -36,14 +36,26 @@ char    *get_next_line(int fd)
 {
     static char *txt;
     char        *line;
-    char    *tmp;
-    ssize_t     rd;
+    char        *tmp;
 
     allo_read(&txt, fd);
     line = ft_substr(txt , 0, new_line(txt));
-    
-    tmp = strdup(txt);
+    tmp = ft_strdup(txt);
     free(txt);
-    txt = ft_substr(txt, new_line(tmp), strlen(tmp));
+    txt = ft_substr(txt, new_line(tmp), ft_strlen(tmp));
+    printf("%s\n", txt);
     return (line);
+}
+
+int main()
+{
+	char	*str;
+	//char	*str1;
+	
+	int fd = open("test.txt", O_RDWR);
+	str = get_next_line(fd);
+	printf("...%s...\n",str);
+	//str1 = get_next_line(fd);
+	//printf("%s",str1);
+	close(fd);
 }
