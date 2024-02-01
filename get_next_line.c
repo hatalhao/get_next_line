@@ -1,23 +1,32 @@
-#include "get_next_line.h"
-#include <string.h>
 
-void	freee(char **str)
+
+#include "get_next_line.h"
+
+void	*ft_memset(void *s, int c, size_t n)
 {
-	free (str);
-	*str = NULL;
+	unsigned char	*str;
+	unsigned char	a;
+	size_t			i;
+
+	str = s;
+	a = c;
+	i = 0;
+	while (i < n)
+		str[i++] = a;
+	return (str);
 }
 
-char	*join_carry(char *remain)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*total;
-	char	*next;
+	char	*str;
 
-	next = malloc (BUFFER_SIZE + 1);
-	if (next == NULL)
+	if (size && nmemb > SIZE_MAX / size)
+		return (0);
+	str = (char *) malloc (nmemb * size);
+	if (str == NULL)
 		return (NULL);
-	total = ft_strjoin(remain, next);
-	freee(&next);
-	return (total);
+	ft_memset(str, 0, nmemb);
+	return (str);
 }
 
 int	new_line(char *str)
@@ -25,7 +34,7 @@ int	new_line(char *str)
 	int len;
 
 	len = 0;
-	while (str)
+	while (str[len])
 	{
 		if (str[len] == '\n')
 			return (len);
@@ -34,74 +43,72 @@ int	new_line(char *str)
 	return (-1);
 }
 
-char	*ft_allocate(char *str, int fd)
+void	allo_read(char **str, int fd, int *bool)
 {
-	int	rd;
-	int bool;
+	long	rd;
+	char	*tmp;
+	char	*swp;
 
-	str = malloc (BUFFER_SIZE + 1);
-	if (!str)
-		return (NULL);
-	str[BUFFER_SIZE] = 0;
+	swp = NULL;
+	tmp = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
+	if (!tmp)
+		return ;
 	rd = 1;
-	bool = -1;
-	while (rd > 0 && bool < 0)
+	while (rd > 0)
 	{
-		rd = read(fd, str, BUFFER_SIZE);
-		//printf("**%s**\n", str);
-		bool = new_line(str);
-		if (bool >= 0)
-			{
-				//printf ("++%d++\n", bool);
-				return (str);
-			}
-		else
-			return (str);
+		rd = read (fd, tmp, BUFFER_SIZE);
+		if (rd <= 0)
+		{
+			free (tmp);
+			*bool = 0;
+			break ;
+		}
+		swp = ft_strjoin(*str, tmp);
+		free(*str);
+		*str = ft_strdup(swp); 
+		if (new_line(tmp) >= 0)
+			return ;
+		free(swp);
 	}
-	if (rd <= 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	return (str);
 }
 
-char    *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-	static char	*str;
-	char		*contain;
-	char		*main;
-	int			pos;
-	int			rd;
+	static char	*txt;
+	char		*line;
+	char		*tmp;
+	int			bool;
 
-	contain = NULL;
-	contain = ft_allocate(contain, fd);
-	pos = new_line (contain);
-	//printf(">> container IN = [%s] <<\n", contain);
-	if (str && rd > 0)
-	{
-		ft_memcpy (main, str, BUFFER_SIZE);
-		if ((new_line(main) < 0))
-			join_carry(main);
-	}
-	else if (pos >= 0)
-	{
-		main = ft_substr (contain, 0, pos);
-		str = ft_substr (contain, pos, *contain - (*contain + pos));
-	}
-	else if (new_line (contain) < 0)
-		str = join_carry(contain);
-	//printf(">> main = [%s] <<\n", main);
-	printf(">> str = [%s] <<\n", str);
-	return (main);
+	bool = 1;
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	allo_read(&txt, fd, &bool);
+	if (bool == 0)
+		return (txt);
+	line = ft_substr(txt , 0, new_line(txt) + 1);
+	tmp = ft_strdup(txt);
+	free(txt);
+	txt = ft_substr(tmp, new_line(tmp) + 1, ft_strlen(tmp) - new_line(tmp) - 1);
+	free (tmp);
+	return (line);
 }
 
-int main()
+int main(void)
 {
 	char	*str;
-	//char	*str1;
 	
-	int fd = open("test.txt", O_RDWR);
-	str = get_next_line(fd);
-	printf("...%s...\n",str);
-	//str1 = get_next_line(fd);
-	//printf("%s",str1);
+	int fd;
+	fd = open("test.txt", O_RDWR);
+	while ((str = get_next_line(fd)))
+	{
+		printf("%s", str);
+		//free(str);
+	}
+	// str = get_next_line(fd);
+	// printf("-1- %s",str);
+	// str = get_next_line(fd);
+	// printf("-2- %s",str);
+	// str = get_next_line(fd);
+	// printf("-3- %s",str);
 	close(fd);
 }

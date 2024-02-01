@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/01/24 06:55:03 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/02/01 15:07:50 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ char	*ft_strdup(char const *src)
 	size_t	i;
 	char	*duplicate;
 
+	if (!src)
+		return (NULL);
 	duplicate = (char *) malloc ((ft_strlen(src) + 1) * sizeof(char));
 	if (!duplicate)
 		return (NULL);
