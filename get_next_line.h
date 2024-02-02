@@ -9,7 +9,7 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 24
 # endif
 
 char	*get_next_line(int fd);

@@ -44,31 +44,34 @@ int	new_line(char *str)
 }
 
 void	allo_read(char **str, int fd, int *bool)
+// void	allo_read(char **str, int fd)
 {
 	long	rd;
 	char	*tmp;
 	char	*swp;
 
 	swp = NULL;
-	tmp = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
+	tmp = malloc ((BUFFER_SIZE + 1) * sizeof(char));
 	if (!tmp)
 		return ;
 	rd = 1;
-	while (rd > 0)
+	while (rd >= 0)
 	{
 		rd = read (fd, tmp, BUFFER_SIZE);
 		if (rd <= 0)
 		{
+			*str = ft_strdup(tmp);
 			free (tmp);
 			*bool = 0;
 			break ;
 		}
+		tmp[rd] = '\0';
 		swp = ft_strjoin(*str, tmp);
 		free(*str);
 		*str = ft_strdup(swp); 
+		free(swp);
 		if (new_line(tmp) >= 0)
 			return ;
-		free(swp);
 	}
 }
 
@@ -82,13 +85,16 @@ char	*get_next_line(int fd)
 	bool = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
+	//printf("1-- %s\n", txt);
 	allo_read(&txt, fd, &bool);
+	// allo_read(&txt, fd);
 	if (bool == 0)
-		return (txt);
+		line = ft_strdup(txt);
 	line = ft_substr(txt , 0, new_line(txt) + 1);
 	tmp = ft_strdup(txt);
 	free(txt);
 	txt = ft_substr(tmp, new_line(tmp) + 1, ft_strlen(tmp) - new_line(tmp) - 1);
+	//printf("2-- %s", txt);
 	free (tmp);
 	return (line);
 }
@@ -99,16 +105,11 @@ int main(void)
 	
 	int fd;
 	fd = open("test.txt", O_RDWR);
-	while ((str = get_next_line(fd)))
-	{
-		printf("%s", str);
-		//free(str);
-	}
-	// str = get_next_line(fd);
-	// printf("-1- %s",str);
-	// str = get_next_line(fd);
-	// printf("-2- %s",str);
-	// str = get_next_line(fd);
-	// printf("-3- %s",str);
+	str = get_next_line(fd);
+	printf("- 1 - %s",str);
+	str = get_next_line(fd);
+	printf("- 2 - %s",str);
+	str = get_next_line(fd);
+	printf("- 3 - %s",str);
 	close(fd);
 }
