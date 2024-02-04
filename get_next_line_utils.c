@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/02/01 15:07:50 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:27:43 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ size_t	ft_strlen(char const *str)
 {
 	size_t	i;
 
+	if (!str)
+		return (0);
 	i = 0;
 	while (str[i])
 		i++;
@@ -49,11 +51,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	char	*str;
 
 	if (!s1 && !s2)
-		return (NULL);
-	if (!s1 && s2)
-		return ((char *)s2);
-	if (s1 && !s2)
-		return ((char *)s1);	
+		return (NULL);	
 	len1 = ft_strlen(s1);
 	len2 = ft_strlen(s2);
 	len = len1 + len2;
