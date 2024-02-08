@@ -7,7 +7,7 @@ int main(void)
 	int fd;
 	fd = open("test.txt", O_RDWR);
 	while ((str = get_next_line(fd)))
-	    printf(". %s", str);
+	    printf("%s", str);
     
     // str = get_next_line(fd);
 	// printf("- 1 - %s", str);

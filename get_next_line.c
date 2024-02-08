@@ -1,6 +1,9 @@
-
-
 #include "get_next_line.h"
+
+// void one_line_no_nl()
+// {
+
+// }
 
 int	new_line(char *str)
 {
@@ -30,11 +33,17 @@ void	allo_read(char **str, int fd, int *bool)
 	while (rd >= 0)
 	{
 		rd = read (fd, tmp, BUFFER_SIZE);
-		//printf("--%ld--", rd);
-		if (rd <= 0)
+		//printf("--%s--", tmp);
+		if (rd < 0)
 		{
 			free (tmp);
 			*bool = 0;
+			break ;
+		}
+		if (rd == 0)
+		{
+			free (tmp);
+			*bool = 2;
 			break ;
 		}
 		tmp[rd] = '\0';
@@ -62,6 +71,13 @@ char	*get_next_line(int fd)
 	// allo_read(&txt, fd);
 	if (bool == 0)
 		return (NULL);
+	if (bool == 2)
+	{
+		line = ft_strdup(txt);
+		free(txt);
+		txt = NULL;
+		return (line);
+	}
 	line = ft_substr(txt , 0, new_line(txt) + 1);
 	tmp = ft_strdup(txt);
 	free(txt);
