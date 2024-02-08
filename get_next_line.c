@@ -1,13 +1,10 @@
 #include "get_next_line.h"
 
-// void one_line_no_nl()
-// {
 
-// }
 
 int	new_line(char *str)
 {
-	int len;
+	int	len;
 
 	len = 0;
 	while (str[len])
@@ -19,31 +16,33 @@ int	new_line(char *str)
 	return (-1);
 }
 
-void	allo_read(char **str, int fd, int *bool)
+
+char	*ft_example(void)
+{
+	char	*tmp;
+
+	tmp = malloc ((BUFFER_SIZE + 1) * sizeof(char));
+	if (!tmp)
+		return NULL;
+	return (tmp);
+}
+
+void	allo_read(char **str, int fd, int *bool, char *tmp)
 {
 	long	rd;
-	char	*tmp;
 	char	*swp;
 
 	swp = NULL;
-	tmp = malloc ((BUFFER_SIZE + 1) * sizeof(char));
-	if (!tmp)
-		return ;
 	rd = 1;
 	while (rd >= 0)
 	{
 		rd = read (fd, tmp, BUFFER_SIZE);
-		//printf("--%s--", tmp);
-		if (rd < 0)
+		if(rd <= 0)
 		{
-			free (tmp);
+			free(tmp);
 			*bool = 0;
-			break ;
-		}
-		if (rd == 0)
-		{
-			free (tmp);
-			*bool = 2;
+			if(!rd)
+				*bool = 2;
 			break ;
 		}
 		tmp[rd] = '\0';
@@ -51,8 +50,11 @@ void	allo_read(char **str, int fd, int *bool)
 		free(*str);
 		*str = ft_strdup(swp); 
 		free(swp);
-		if (new_line(tmp) >= 0 || !rd)
+		if (new_line(tmp) >= 0)
+		{
+			free (tmp);
 			return ;
+		}
 	}
 }
 
@@ -66,9 +68,7 @@ char	*get_next_line(int fd)
 	bool = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	//printf("1-- %s\n", txt);
-	allo_read(&txt, fd, &bool);
-	// allo_read(&txt, fd);
+	allo_read(&txt, fd, &bool , ft_example());
 	if (bool == 0)
 		return (NULL);
 	if (bool == 2)
@@ -82,7 +82,6 @@ char	*get_next_line(int fd)
 	tmp = ft_strdup(txt);
 	free(txt);
 	txt = ft_substr(tmp, new_line(tmp) + 1, ft_strlen(tmp) - new_line(tmp) - 1);
-	//printf("2-- %s", txt);
 	free (tmp);
 	return (line);
 }

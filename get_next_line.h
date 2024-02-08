@@ -18,5 +18,6 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(char const *src);
 size_t	ft_strlen(char const *str);
 void	*ft_memcpy(void *dest, void const *src, size_t n);
+char	*ft_example();
 
 #endif
