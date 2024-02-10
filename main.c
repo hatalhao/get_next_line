@@ -4,15 +4,18 @@ int main(void)
 {
 	char	*str;
 	int		fd;
+	int i=0;
 	
-	fd = open(".macos", O_RDONLY);
-	while ((str = get_next_line(fd)))
+	fd = open("test.txt", O_RDONLY);
+	while (i < 10)
 	{
-		printf("%s", str);
+		i++;
+		str = get_next_line(fd);
+		printf("* %d *%s", i, str);
 		free (str);
 	}
-	str = get_next_line(fd);
-	printf("%s", str);
-	system("leaks a.out");
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// system("leaks a.out")
 	close(fd);
 }

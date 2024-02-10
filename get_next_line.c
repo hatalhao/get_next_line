@@ -8,7 +8,6 @@ void	ft_join_update(char **holder, char **container)
 	swp = ft_strjoin(*holder, *container);
 	free(*holder);
 	*holder = ft_strdup(swp);
-	// *holder = swp;
 	free(swp);
 }
 
@@ -36,7 +35,7 @@ char	*ft_example(void)
 	return (tmp);
 }
 
-void	allo_read(char **str, int fd, int *bool, char *tmp)
+void	ft_read(char **str, int fd, int *bool, char *tmp)
 {
 	long	rd;
 
@@ -54,7 +53,6 @@ void	allo_read(char **str, int fd, int *bool, char *tmp)
 		}
 		tmp[rd] = '\0';
 		ft_join_update(str, &tmp);
-		//*str = ft_strjoin(*str, tmp);
 		if (new_line(tmp) >= 0)
 		{
 			free (tmp);
@@ -71,13 +69,19 @@ char	*get_next_line(int fd)
 	int			bool;
 
 	bool = 1;
-	if (fd < 0 || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
+	if (fd < 0 || fd < 1024 || BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
 		return (NULL);
-	allo_read(&txt, fd, &bool, ft_example());
+	ft_allo_read(&txt, fd, &bool, ft_example());
 	if (bool == 0)
+		
 		return (NULL);
 	if (bool == 2)
 	{
+		if (!ft_strlen(txt))
+		{
+			free(txt);
+			return (NULL);
+		}
 		line = ft_strdup(txt);
 		free(txt);
 		txt = NULL;
