@@ -6,7 +6,7 @@
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/02/10 17:54:17 by hatalhao         ###   ########.fr       */
+/*   Updated: 2024/02/15 07:35:18 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 	if (dest == src)
 		return (dest);
-	str1 = (unsigned char *) src;
-	str2 = (unsigned char *) dest;
+	str1 = (unsigned char *)src;
+	str2 = (unsigned char *)dest;
 	i = 0;
 	while (i < n)
 	{
@@ -43,25 +43,29 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	len1;
-	size_t	len2;
-	size_t	len;
+	size_t	i;
 	char	*str;
+	char	*ptr;
 
+	i = 0;
 	if (!s1 && !s2)
-		return (NULL);	
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	len = len1 + len2;
-	str = (char *) malloc ((len + 1) * sizeof(char));
+		return (NULL);
+	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
-	ft_memcpy(str, s1, len1);
-	ft_memcpy(str + len1, s2, len2);
-	str[len] = '\0';
-	return (str);
+	ptr = str;
+	if (s1)
+		while (s1[i])
+			*(str++) = s1[i++];
+	i = 0;
+	if (s2)
+		while (s2[i])
+			*(str++) = s2[i++];
+	*str = '\0';
+	my_free(&s1);
+	return (ptr);
 }
 
 char	*ft_strdup(char const *src)
@@ -71,7 +75,7 @@ char	*ft_strdup(char const *src)
 
 	if (!src)
 		return (NULL);
-	duplicate = (char *) malloc ((ft_strlen(src) + 1) * sizeof(char));
+	duplicate = (char *)malloc((ft_strlen(src) + 1) * sizeof(char));
 	if (!duplicate)
 		return (NULL);
 	i = 0;
@@ -87,22 +91,10 @@ char	*ft_strdup(char const *src)
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*ss;
-	size_t	isleft;
 
 	if (!s)
 		return (0);
-	if (start >= ft_strlen(s) || !len)
-	{
-		ss = (char *) malloc ((1) * sizeof(char));
-		if (ss == NULL)
-			return (NULL);
-		ss[0] = '\0';
-		return (ss);
-	}
-	isleft = ft_strlen(s + start);
-	if (len > isleft)
-		len = isleft;
-	ss = (char *) malloc ((len + 1) * sizeof(char));
+	ss = (char *)malloc((len + 1) * sizeof(char));
 	if (ss == NULL)
 		return (NULL);
 	ft_memcpy(ss, s + start, len);

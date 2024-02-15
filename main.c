@@ -2,20 +2,58 @@
 
 int main(void)
 {
-	char	*str;
+	char	*str = 0;
 	int		fd;
-	int i=0;
-	
-	fd = open("test.txt", O_RDONLY);
-	while (i < 10)
+
+	fd = open("file.txt", O_RDONLY);
+	// printf("%s", str = get_next_line(fd));
+	// 	free(str);
+	// printf("%s", str = get_next_line(fd));
+	// 	free(str);
+	// printf("%s", str = get_next_line(fd));
+	// 	free(str);
+	// printf("%s\n", str = get_next_line(fd));
+	// 	free(str);
+	// while (i < 8)
+
+	// str = get_next_line(fd);
+	// printf("Line 1 == %s", str);
+	// free (str);
+	// str = get_next_line(fd);
+	// printf("Line 2 == %s", str);
+	// free (str);
+	// str = get_next_line(fd);
+	// printf("Line 3 == %s", str);
+	// free (str);
+	// str = get_next_line(fd);
+	// printf("Line == %s", str);
+	// free (str);
+	// str = get_next_line(fd);
+	// printf("Line == %s", str);
+	// free (str);
+	//str = get_next_line(fd);
+	int i = 0;
+	while( i < 2)
 	{
-		i++;
 		str = get_next_line(fd);
-		printf("* %d *%s", i, str);
+		printf("Line == %s", str);
 		free (str);
+		i++;
+	}
+	close(fd);
+	str = get_next_line(fd);
+	fd = open("file.txt", O_RDONLY);
+	i = 0;
+	while( i < 4)
+	{
+		str = get_next_line(fd);
+		printf("Line == %s", str);
+		free (str);
+		i++;
 	}
 	// str = get_next_line(fd);
-	// printf("%s", str);
-	// system("leaks a.out")
-	close(fd);
+//	system("leaks Get_Next_line");
+	// printf("Line == %s\n", str);
+	// str = get_next_line(fd);
+	// printf("Line == %s\n", str);
 }
