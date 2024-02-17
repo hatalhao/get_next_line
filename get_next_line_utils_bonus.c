@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/10 00:07:46 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/02/17 01:14:57 by hatalhao         ###   ########.fr       */
+/*   Created: 2024/02/16 23:40:06 by hatalhao          #+#    #+#             */
+/*   Updated: 2024/02/17 02:42:26 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(char const *str)
 {

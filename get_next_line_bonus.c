@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hatalhao <hatalhao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/15 07:36:05 by hatalhao          #+#    #+#             */
-/*   Updated: 2024/02/17 02:40:54 by hatalhao         ###   ########.fr       */
+/*   Created: 2024/02/16 23:39:50 by hatalhao          #+#    #+#             */
+/*   Updated: 2024/02/17 02:42:12 by hatalhao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_free(char **str)
 {
@@ -83,7 +83,7 @@ char	*ft_read(int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*remainder[1023];
 	char		*total;
 	char		*line;
 	char		*tmp;
@@ -94,17 +94,17 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd >= 1024 || (read (fd, total, 0) == -1)
 		|| BUFFER_SIZE <= 0 || BUFFER_SIZE > INT_MAX)
 	{
-		ft_free(&remainder);
+		ft_free(&remainder[fd]);
 		return (NULL);
 	}
-	if (remainder)
-		total = ft_strjoin(remainder, 0);
+	if (remainder[fd])
+		total = ft_strjoin(remainder[fd], 0);
 	tmp = ft_read(fd);
 	if (tmp)
 	{
 		total = ft_strjoin(total, tmp);
 		ft_free(&tmp);
-		remainder = the_line(total, &line);
+		remainder[fd] = the_line(total, &line);
 	}
 	ft_free(&total);
 	return (line);
